@@ -12,10 +12,10 @@
 ##########------------------------------------------------------##########
 FILE_NAME    = stormtrp
 FILE_NAME_UC = $(shell echo $(FILE_NAME) | tr a-z A-Z)
-OUTPUT_DIR   = ./output
+OUTPUT_DIR   = .\output
 PERL	     = perl prefix_lines.pl
-C1541	     = d:\future2\c64\GTK3VICE-3.6.1-win64\bin\c1541.exe
-C64LIST	     = d:\future2\c64\C64List4.01\C64List.exe 
+C1541	     = ..\..\..\_installed\GTK3VICE-3.6.1-win64\bin\c1541.exe
+C64LIST	     = ..\..\..\_installed\C64List4.01\C64List.exe 
 
 ##########------------------------------------------------------##########
 ##########                       All                            ##########
@@ -27,23 +27,20 @@ rebuild: clean all
 ##########------------------------------------------------------##########
 ##########                 Convert to BAS                       ##########
 ##########------------------------------------------------------##########
-
 tobas: mkdir
-	$(PERL) $(FILE_NAME)_s.txt $(FILE_NAME)_c.txt $(OUTPUT_DIR)/$(FILE_NAME_UC).bas
+	$(PERL) $(FILE_NAME)_s.txt $(FILE_NAME)_c.txt $(OUTPUT_DIR)\$(FILE_NAME_UC).bas
 
 ##########------------------------------------------------------##########
 ##########                 Tokenize to PRG                      ##########
 ##########------------------------------------------------------##########
-
 toprg: mkdir
-	$(C64LIST) $(OUTPUT_DIR)/$(FILE_NAME).bas -prg -ovr
+	$(C64LIST) $(OUTPUT_DIR)\$(FILE_NAME).bas -prg -ovr
 
 ##########------------------------------------------------------##########
 ##########                    Make D64 disk                     ##########
 ##########------------------------------------------------------##########
-
 tod64: mkdir
-	$(C1541) -format diskname,id d64 $(OUTPUT_DIR)/$(FILE_NAME).d64 -attach $(OUTPUT_DIR)/$(FILE_NAME).d64 -write $(OUTPUT_DIR)/$(FILE_NAME).prg $(FILE_NAME)
+	$(C1541) -format diskname,id d64 $(OUTPUT_DIR)\$(FILE_NAME).d64 -attach $(OUTPUT_DIR)\$(FILE_NAME).d64 -write $(OUTPUT_DIR)\$(FILE_NAME).prg $(FILE_NAME)
 
 ##########------------------------------------------------------##########
 ##########                      Helpers                         ##########
@@ -57,8 +54,7 @@ clean:
 ##########------------------------------------------------------##########
 ##########    Extract BASIC source code from PRG within D64     ##########
 ##########------------------------------------------------------##########
-
 revert:
-	cp $(OUTPUT_DIR)/$(FILE_NAME).d64 ./$(FILE_NAME).d64
-	$(C64LIST) $(FILE_NAME).d64::$(FILE_NAME_UC) -txt:$(OUTPUT_DIR)/$(FILE_NAME)_o.bas -ovr
-	rm -f ./$(FILE_NAME).d64
+	cp $(OUTPUT_DIR)/$(FILE_NAME).d64 .\$(FILE_NAME).d64
+	$(C64LIST) $(FILE_NAME).d64::$(FILE_NAME_UC) -txt:$(OUTPUT_DIR)\$(FILE_NAME)_o.bas -ovr
+	rm -f .\$(FILE_NAME).d64
