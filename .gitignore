@@ -1,0 +1,5 @@
+# Ignore all temoprarily produded content
+output/
+
+# Ignore folders with "_" prefix
+_*/
