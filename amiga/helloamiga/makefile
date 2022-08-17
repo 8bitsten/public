@@ -1,11 +1,11 @@
 TITLE        = hello
-OUTPUT_DIR   = output
 SOURCES      = $(wildcard *.c)
 OBJS         = $(notdir $(SOURCES:.c=.o) )
 EXE          = hello.exe
 
-CFLAGS       = -vv +c64 #+c64 or +kick13
-LDFLAGS      =  
+TARGET       = +kick13 #+c64 or +kick13
+CFLAGS       = -vv $(TARGET)
+LDFLAGS      = -vv $(TARGET)
 
 CC           = vc
 
@@ -21,7 +21,7 @@ clean:
 rebuild: clean all
 
 $(EXE): $(OBJS)
-	$(CC) $^ -o $@ $(CFLAGS) $(LDFLAGS)
+	$(CC) $^ -o $@ $(LDFLAGS)
 
 $%.o : %.c
 	$(CC) $^ -c -o $@ $(CFLAGS)
