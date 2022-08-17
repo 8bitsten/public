@@ -2,13 +2,9 @@
  * 
  * \brief Main
  *
- * \file hiamiga.c
+ * \file hellointuition.c
  *
  ******************************************************************************/
-
-//#include <stdlib.h>
-//#include <string.h>
-
 #include <clib/exec_protos.h>
 #include <clib/intuition_protos.h>
 #include <clib/dos_protos.h>
@@ -18,19 +14,20 @@
 // The "intuition.library"
 struct IntuitionBase* IntuitionBase = NULL;
 
-static const char titleAndVersion[] = "Hello Amiga";
+// The text for CLI and window title
+static const char titleAndVersion[] = "Hello Intuition";
 
 //! Base error value
 #define ERR_BASE 0
 
 //! Success return value
-const int ERR_NONE = ERR_BASE;
+static const int ERR_NONE = ERR_BASE;
 
 //! Some, but known error
-const int ERR_KNOWN = ERR_BASE - 1;
+static const int ERR_KNOWN = ERR_BASE - 1;
 
 //! Close all
-const int ERR_CLOSE = ERR_BASE - 2;
+static const int ERR_CLOSE = ERR_BASE - 2;
 
 /***************************************************************************//**
 *  
@@ -93,7 +90,7 @@ int main()
 
                 while ( loop )
                 {
-                    printf( "[SIG] Wait for signal 'SIGBREAKF_CTRL_C' or message\n" );
+                    printf( "Wait for signal 'SIGBREAKF_CTRL_C' or message\n" );
                     
                     // Message port signal mask
                     ULONG msgSignalMask = (ULONG) 1 << window->UserPort->mp_SigBit;
@@ -122,7 +119,7 @@ int main()
                             // If close icon was pressed close the app
                             if ( im->Class == CLOSEWINDOW )
                             {
-                                printf( "Message 'IDCMP_CLOSEWINDOW' received\n" );
+                                printf( "Message 'CLOSEWINDOW' received\n" );
                                 loop = FALSE;
                                 err = ERR_CLOSE;
                             }
@@ -179,7 +176,7 @@ struct Screen* getWorkbenchPubScreen()
     {
         if ( ( s->Flags & SCREENTYPE ) == WBENCHSCREEN )       
         {
-            printf( "Screen '%s' is WORKBENCH", s->Title );
+            printf( "Screen '%s' is the Workbench one\n", s->Title );
             break;
         }
         else
