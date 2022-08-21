@@ -1,13 +1,13 @@
 /***************************************************************************//**
- * 
+ *
  * \brief Main
  *
  * \file hellointuition.c
  *
  ******************************************************************************/
-#include <clib/exec_protos.h>
-#include <clib/intuition_protos.h>
-#include <clib/dos_protos.h>
+#include <proto/exec.h>
+#include <proto/intuition.h>
+#include <proto/dos.h>
 #include <intuition/intuitionbase.h>
 #include <stdio.h>
 
@@ -30,8 +30,8 @@ static const int ERR_KNOWN = ERR_BASE - 1;
 static const int ERR_CLOSE = ERR_BASE - 2;
 
 /***************************************************************************//**
-*  
-* \brief NDK13 compatibility function. Prior to Release 2 (V36), there were 
+*
+* \brief NDK13 compatibility function. Prior to Release 2 (V36), there were
 *        no public screens so e.g. the method 'LockPubScreen()' cannot be used.
 *        This method searches the list of all screens and locate the
 *        default Workbench screen.
@@ -41,9 +41,9 @@ static const int ERR_CLOSE = ERR_BASE - 2;
 struct Screen* getWorkbenchPubScreen();
 
 /***************************************************************************//**
-*  
+*
 * \brief Program main entry
-* \return ERR_NONE if everything went successfully or teh corresponding error 
+* \return ERR_NONE if everything went successfully or teh corresponding error
 *         error code
 *
 ******************************************************************************/
@@ -53,7 +53,7 @@ int main()
     int err = ERR_KNOWN;
 
     IntuitionBase = (struct IntuitionBase*) OpenLibrary( "intuition.library", 0 );
-    
+
     if ( IntuitionBase )
     {
         printf( titleAndVersion );
@@ -76,12 +76,12 @@ int main()
             newWindow.FirstGadget = NULL;
             newWindow.CheckMark = NULL;
             newWindow.Title = (UBYTE*) titleAndVersion;
-            newWindow.Screen = NULL; // Used only if we have defined a CUSTOMSCREEN 
+            newWindow.Screen = NULL; // Used only if we have defined a CUSTOMSCREEN
             newWindow.BitMap = NULL;
             newWindow.Type = WBENCHSCREEN;
 
 
-            // Create the window on the Workbench public screen 
+            // Create the window on the Workbench public screen
             struct Window* window = OpenWindow( &newWindow );
             if ( window )
             {
@@ -91,7 +91,7 @@ int main()
                 while ( loop )
                 {
                     printf( "Wait for signal 'SIGBREAKF_CTRL_C' or message\n" );
-                    
+
                     // Message port signal mask
                     ULONG msgSignalMask = (ULONG) 1 << window->UserPort->mp_SigBit;
 
@@ -99,7 +99,7 @@ int main()
                     ULONG signals = Wait( SIGBREAKF_CTRL_C | msgSignalMask );
 
                     // CTRL+C closes the app
-                    if ( signals & SIGBREAKF_CTRL_C ) 
+                    if ( signals & SIGBREAKF_CTRL_C )
                     {
                         printf( "Signal 'SIGBREAKF_CTRL_C' received\n" );
                         loop = FALSE;
@@ -126,7 +126,7 @@ int main()
                             // Inform sender that the message was processed
                             ReplyMsg( (struct Message*) im );
                         }
-                    } 
+                    }
                 }
                 CloseWindow( window );
                 window  = NULL;
@@ -140,7 +140,7 @@ int main()
         else
         {
             printf( "[ERROR] Workbench screen cannot be accessed\n" );
-            err = ERR_KNOWN;           
+            err = ERR_KNOWN;
         }
     }
     else
@@ -156,8 +156,8 @@ int main()
 }
 
 /***************************************************************************//**
-*  
-* \brief NDK13 compatibility function. Prior to Release 2 (V36), there were 
+*
+* \brief NDK13 compatibility function. Prior to Release 2 (V36), there were
 *        no public screens so e.g. the method 'LockPubScreen()' cannot be used.
 *        This method searches the list of all screens and locate the
 *        default Workbench screen.
@@ -166,15 +166,15 @@ int main()
 ******************************************************************************/
 struct Screen* getWorkbenchPubScreen()
 {
-    // Prior to Release 2 (V36), there were no public screens,     
-    // just Workbench. In those older systems, windows can be     
-    // opened on Workbench without locking or a pointer by setting 
+    // Prior to Release 2 (V36), there were no public screens,
+    // just Workbench. In those older systems, windows can be
+    // opened on Workbench without locking or a pointer by setting
     // the Type=WBENCHSCREEN in struct NewWindow.
 
     struct Screen* s = IntuitionBase->FirstScreen;
     while ( s )
     {
-        if ( ( s->Flags & SCREENTYPE ) == WBENCHSCREEN )       
+        if ( ( s->Flags & SCREENTYPE ) == WBENCHSCREEN )
         {
             printf( "Screen '%s' is the Workbench one\n", s->Title );
             break;
