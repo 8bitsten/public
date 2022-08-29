@@ -26,9 +26,6 @@ static const int ERR_NONE = ERR_BASE;
 //! Some, but known error
 static const int ERR_KNOWN = ERR_BASE - 1;
 
-//! Close all
-static const int ERR_CLOSE = ERR_BASE - 2;
-
 /***************************************************************************//**
 *
 * \brief NDK13 compatibility function. Prior to Release 2 (V36), there were
@@ -103,7 +100,7 @@ int main()
                     {
                         printf( "Signal 'SIGBREAKF_CTRL_C' received\n" );
                         loop = FALSE;
-                        err = ERR_CLOSE;
+                        err = ERR_NONE;
                     }
 
                     // Check if there is a message
@@ -121,7 +118,7 @@ int main()
                             {
                                 printf( "Message 'CLOSEWINDOW' received\n" );
                                 loop = FALSE;
-                                err = ERR_CLOSE;
+                                err = ERR_NONE;
                             }
                             // Inform sender that the message was processed
                             ReplyMsg( (struct Message*) im );

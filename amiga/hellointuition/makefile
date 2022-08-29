@@ -1,11 +1,11 @@
-TITLE        = helloint
+TITLE        = hi
 SOURCES      = $(wildcard *.c)
 OBJS         = $(notdir $(SOURCES:.c=.o))
-EXE          = $(TITLE).exe
+EXE          = $(TITLE)
 
 TARGET       = +kick13 
 CFLAGS       = -vv $(TARGET) -I"%VBCC%"/NDK_1_3/Includes1_3/include_h 
-LDFLAGS      = -vv $(TARGET) -lamiga
+LDFLAGS      = -vv $(TARGET)
 
 CC           = vc
 
