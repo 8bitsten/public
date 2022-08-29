@@ -91,10 +91,10 @@ int main()
 
                     // Message port signal mask
                     ULONG msgSignalMask = (ULONG) 1 << window->UserPort->mp_SigBit;
-
+                    
                     // Put task to 'waiting' stare and wait for CTRL+C signal mask or message
                     ULONG signals = Wait( SIGBREAKF_CTRL_C | msgSignalMask );
-
+                    
                     // CTRL+C closes the app
                     if ( signals & SIGBREAKF_CTRL_C )
                     {
@@ -108,7 +108,7 @@ int main()
                     if ( signals & msgSignalMask )
                     {
                         printf( "Signal 'Message Port' received\n" );
-
+                        
                         // Get the message
                         im = (struct IntuiMessage*) GetMsg( window->UserPort );
                         if ( im )
@@ -139,14 +139,14 @@ int main()
             printf( "[ERROR] Workbench screen cannot be accessed\n" );
             err = ERR_KNOWN;
         }
+
+        CloseLibrary( (struct Library*) IntuitionBase );
     }
     else
     {
         printf ( "[ERROR] The 'intuition.library' cannot be opened\n" );
         err = ERR_KNOWN;
     };
-
-    CloseLibrary( (struct Library*) IntuitionBase );
 
     printf( "Good Bye!\n"  );
     return err;
